@@ -2,6 +2,8 @@
 title: "DID Analysis: Zika and Birth Rates"
 author: "Lee Kennedy-Shaffer, PhD"
 format: html
+embed-resources: true
+self-contained: true
 editor: visual
 ---
 
