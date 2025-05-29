@@ -126,7 +126,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## If you have not installed these packages before,</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="do">##  run the following line:</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(c("bacondecomp","did2s","did","DIDmultiplegt"))</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(c("panelView","bacondecomp","did2s","did","DIDmultiplegt"))</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Either way, load the libraries:</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
@@ -139,6 +139,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="graphical-exploration" class="level2">
 <h2 class="anchored" data-anchor-id="graphical-exploration">Graphical Exploration</h2>
+<p>Some of these visualizations can be accomplished with the <code>panelView</code> package instead; see <a href="https://yiqingxu.org/packages/panelview/index.html" class="uri">https://yiqingxu.org/packages/panelview/index.html</a> for details.</p>
 <p>We begin by plotting the time series for visual inspection. First, we plot a timeline of the mandate times.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot time series of mandates themselves:</span></span>
@@ -556,7 +557,7 @@ aggte(MP = attgt, type = "simple")
 Reference: Callaway, Brantly and Pedro H.C. Sant'Anna.  "Difference-in-Differences with Multiple Time Periods." Journal of Econometrics, Vol. 225, No. 2, pp. 200-230, 2021. &lt;https://doi.org/10.1016/j.jeconom.2020.12.001&gt;, &lt;https://arxiv.org/abs/1803.09015&gt; 
 
      ATT    Std. Error     [ 95%  Conf. Int.] 
- -0.3631        0.4818    -1.3073      0.5811 
+ -0.3631        0.5025     -1.348      0.6217 
 
 
 ---
@@ -577,39 +578,39 @@ Reference: Callaway, Brantly and Pedro H.C. Sant'Anna.  "Difference-in-Differenc
 
 Overall summary of ATT's based on event-study/dynamic aggregation:  
      ATT    Std. Error     [ 95%  Conf. Int.] 
- -0.4219        0.6191    -1.6353      0.7916 
+ -0.4219        0.6087    -1.6148      0.7711 
 
 
 Dynamic Effects:
  Event time Estimate Std. Error [95% Simult.  Conf. Band] 
-        -16  -0.8690     0.8069       -2.9906      1.2527 
-        -15  -0.0092     0.0687       -0.1899      0.1715 
-        -14  -0.0621     0.0706       -0.2476      0.1235 
-        -13  -0.0595     0.0860       -0.2855      0.1666 
-        -12  -0.0632     0.0615       -0.2250      0.0985 
-        -11  -0.0824     0.0872       -0.3117      0.1469 
-        -10  -0.1272     0.0685       -0.3073      0.0529 
-         -9   0.2029     0.4133       -0.8840      1.2897 
-         -8  -0.0980     0.0800       -0.3085      0.1125 
-         -7  -0.0623     0.0720       -0.2517      0.1270 
-         -6  -0.1039     0.0747       -0.3003      0.0925 
-         -5  -0.0266     0.0916       -0.2675      0.2143 
-         -4  -0.0628     0.0611       -0.2236      0.0979 
-         -3  -0.0705     0.0614       -0.2320      0.0910 
-         -2  -0.0891     0.0615       -0.2509      0.0728 
-         -1  -0.0431     0.0751       -0.2407      0.1544 
-          0  -0.0331     0.0761       -0.2332      0.1670 
-          1  -0.1818     0.2683       -0.8873      0.5236 
-          2  -0.2124     0.3175       -1.0471      0.6223 
-          3  -0.2345     0.3604       -1.1822      0.7133 
-          4  -0.5414     0.5225       -1.9152      0.8325 
-          5  -0.5977     0.6725       -2.3661      1.1707 
-          6  -0.5705     0.8156       -2.7151      1.5741 
-          7  -0.3724     0.9507       -2.8722      2.1274 
-          8  -1.0230     0.9908       -3.6284      1.5824 
-          9  -0.9023     1.0150       -3.5712      1.7666 
-         10  -1.1828     1.4595       -5.0205      2.6550 
-         11   0.7897     0.5386       -0.6266      2.2060 
+        -16  -0.8690     0.7860       -2.9217      1.1838 
+        -15  -0.0092     0.0710       -0.1946      0.1763 
+        -14  -0.0621     0.0698       -0.2444      0.1203 
+        -13  -0.0595     0.0791       -0.2660      0.1471 
+        -12  -0.0632     0.0581       -0.2148      0.0884 
+        -11  -0.0824     0.0805       -0.2925      0.1278 
+        -10  -0.1272     0.0658       -0.2992      0.0447 
+         -9   0.2029     0.4266       -0.9113      1.3170 
+         -8  -0.0980     0.0807       -0.3087      0.1127 
+         -7  -0.0623     0.0728       -0.2523      0.1277 
+         -6  -0.1039     0.0736       -0.2962      0.0884 
+         -5  -0.0266     0.0876       -0.2555      0.2023 
+         -4  -0.0628     0.0599       -0.2193      0.0936 
+         -3  -0.0705     0.0618       -0.2319      0.0909 
+         -2  -0.0891     0.0656       -0.2604      0.0822 
+         -1  -0.0431     0.0720       -0.2311      0.1449 
+          0  -0.0331     0.0769       -0.2341      0.1678 
+          1  -0.1818     0.2591       -0.8585      0.4948 
+          2  -0.2124     0.3043       -1.0071      0.5823 
+          3  -0.2345     0.3446       -1.1346      0.6656 
+          4  -0.5414     0.5600       -2.0041      0.9213 
+          5  -0.5977     0.6315       -2.2470      1.0516 
+          6  -0.5705     0.7441       -2.5138      1.3728 
+          7  -0.3724     0.9320       -2.8066      2.0618 
+          8  -1.0230     0.9383       -3.4736      1.4276 
+          9  -0.9023     0.9994       -3.5125      1.7079 
+         10  -1.1828     1.4892       -5.0722      2.7067 
+         11   0.7897     0.5459       -0.6360      2.2153 
 ---
 Signif. codes: `*' confidence band does not cover 0
 
@@ -628,19 +629,19 @@ Reference: Callaway, Brantly and Pedro H.C. Sant'Anna.  "Difference-in-Differenc
 
 Overall summary of ATT's based on group/cohort aggregation:  
      ATT    Std. Error     [ 95%  Conf. Int.] 
- -0.1406        0.3366    -0.8004      0.5193 
+ -0.1406        0.3368    -0.8008      0.5196 
 
 
 Group Effects:
  Group Estimate Std. Error [95% Simult.  Conf. Band]  
-    31  -0.1041     0.3460       -0.8855      0.6772  
-    32  -4.0693     0.2535       -4.6416     -3.4969 *
-    33  -0.4050     0.4328       -1.3822      0.5722  
-    35   0.7787     0.7982       -1.0238      2.5811  
-    36  -0.8542     0.0948       -1.0682     -0.6401 *
-    38  -0.1262     0.0631       -0.2686      0.0162  
-    39   0.3886     0.1389        0.0749      0.7023 *
-    42   0.0471     0.0863       -0.1478      0.2421  
+    31  -0.1041     0.3347       -0.8898      0.6815  
+    32  -4.0693     0.2435       -4.6409     -3.4977 *
+    33  -0.4050     0.4139       -1.3764      0.5664  
+    35   0.7787     1.0485       -1.6823      3.2396  
+    36  -0.8542     0.0899       -1.0651     -0.6433 *
+    38  -0.1262     0.0638       -0.2759      0.0235  
+    39   0.3886     0.1270        0.0905      0.6868 *
+    42   0.0471     0.0865       -0.1559      0.2501  
 ---
 Signif. codes: `*' confidence band does not cover 0
 
@@ -685,39 +686,39 @@ Reference: Callaway, Brantly and Pedro H.C. Sant'Anna.  "Difference-in-Differenc
 
 Overall summary of ATT's based on event-study/dynamic aggregation:  
     ATT    Std. Error     [ 95%  Conf. Int.] 
- 0.2151        0.4943    -0.7536      1.1838 
+ 0.2151        0.4689    -0.7039       1.134 
 
 
 Dynamic Effects:
  Event time Estimate Std. Error [95% Simult.  Conf. Band] 
-        -16  -0.6902     0.8042       -2.7257      1.3452 
-        -15   0.0380     0.0727       -0.1461      0.2220 
-        -14   0.0506     0.0787       -0.1486      0.2497 
-        -13   0.1045     0.0786       -0.0944      0.3035 
-        -12   0.0122     0.0655       -0.1535      0.1780 
-        -11   0.0651     0.0698       -0.1116      0.2417 
-        -10   0.0154     0.0678       -0.1562      0.1870 
-         -9   0.3213     0.4234       -0.7503      1.3929 
-         -8   0.0154     0.0745       -0.1731      0.2040 
-         -7   0.0266     0.0737       -0.1600      0.2131 
-         -6  -0.0204     0.0879       -0.2429      0.2021 
-         -5   0.0378     0.1038       -0.2249      0.3006 
-         -4  -0.0294     0.0744       -0.2178      0.1589 
-         -3  -0.0135     0.0641       -0.1758      0.1487 
-         -2  -0.0390     0.0938       -0.2764      0.1985 
-         -1  -0.0115     0.0849       -0.2264      0.2034 
-          0   0.0552     0.0591       -0.0944      0.2048 
-          1   0.0647     0.1479       -0.3096      0.4390 
-          2   0.0636     0.1963       -0.4334      0.5606 
-          3   0.0560     0.2645       -0.6134      0.7254 
-          4   0.0796     0.4311       -1.0116      1.1707 
-          5   0.1322     0.6216       -1.4413      1.7056 
-          6   0.1525     0.6262       -1.4324      1.7374 
-          7   0.4809     0.8048       -1.5561      2.5180 
-          8   0.0301     0.7044       -1.7527      1.8129 
-          9   0.0965     0.7942       -1.9136      2.1066 
-         10   0.4001     0.8061       -1.6401      2.4404 
-         11   0.9697     0.8955       -1.2967      3.2362 
+        -16  -0.6902     0.7808       -3.2795      1.8990 
+        -15   0.0380     0.0708       -0.1970      0.2729 
+        -14   0.0506     0.0766       -0.2036      0.3047 
+        -13   0.1045     0.0739       -0.1406      0.3497 
+        -12   0.0122     0.0715       -0.2249      0.2494 
+        -11   0.0651     0.0702       -0.1676      0.2977 
+        -10   0.0154     0.0669       -0.2063      0.2372 
+         -9   0.3213     0.4021       -1.0122      1.6548 
+         -8   0.0154     0.0776       -0.2418      0.2726 
+         -7   0.0266     0.0690       -0.2022      0.2553 
+         -6  -0.0204     0.0893       -0.3167      0.2758 
+         -5   0.0378     0.1052       -0.3109      0.3866 
+         -4  -0.0294     0.0796       -0.2934      0.2346 
+         -3  -0.0135     0.0684       -0.2404      0.2133 
+         -2  -0.0390     0.0893       -0.3351      0.2571 
+         -1  -0.0115     0.0831       -0.2870      0.2639 
+          0   0.0552     0.0638       -0.1563      0.2666 
+          1   0.0647     0.1388       -0.3956      0.5251 
+          2   0.0636     0.2215       -0.6710      0.7982 
+          3   0.0560     0.2479       -0.7661      0.8781 
+          4   0.0796     0.4206       -1.3151      1.4742 
+          5   0.1322     0.6077       -1.8833      2.1476 
+          6   0.1525     0.6939       -2.1487      2.4538 
+          7   0.4809     0.8109       -2.2084      3.1702 
+          8   0.0301     0.7085       -2.3193      2.3796 
+          9   0.0965     0.7346       -2.3398      2.5328 
+         10   0.4001     0.8334       -2.3636      3.1638 
+         11   0.9697     0.9178       -2.0738      4.0133 
 ---
 Signif. codes: `*' confidence band does not cover 0
 

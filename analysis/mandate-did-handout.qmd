@@ -40,7 +40,7 @@ We now load the required libraries.
 #| output: false
 ## If you have not installed these packages before,
 ##  run the following line:
-# install.packages(c("bacondecomp","did2s","did","DIDmultiplegt"))
+# install.packages(c("panelView","bacondecomp","did2s","did","DIDmultiplegt"))
 ## Either way, load the libraries:
 library(tidyverse)
 library(knitr)
@@ -52,6 +52,8 @@ library(DIDmultiplegt)
 ```
 
 ## Graphical Exploration
+
+Some of these visualizations can be accomplished with the `panelView` package instead; see <https://yiqingxu.org/packages/panelview/index.html> for details.
 
 We begin by plotting the time series for visual inspection. First, we plot a timeline of the mandate times.
 
@@ -530,6 +532,6 @@ dCdH_dyn
 
 ## Discussion Questions
 
-- Are this question and this data set a good fit for a DID/staggered adoption analysis? Why or why not?
+-   Are this question and this data set a good fit for a DID/staggered adoption analysis? Why or why not?
 
-- What would you conclude from these results?
+-   What would you conclude from these results?

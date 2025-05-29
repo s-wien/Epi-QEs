@@ -24,6 +24,8 @@ Compiled by Lee Kennedy-Shaffer, PhD, in May–June 2024. See <https://leekshaff
 
 -   Butts K, Gardner J. did2s: Two-stage difference-in-differences. *R J* 2022;**14**:162-173. <https://doi.org/10.32614/RJ-2022-048>.
 
+-   Liu L, Wang Y, Xu Y. A practical guide to counterfactual estimators for causal inference with time-series cross-sectional data. *Am J Poli Sci* 2022;**68**:160--176. <https://doi.org/10.1111/ajps.12723>.
+
 -   De Chaisemartin C, D’Haultfœuille X. Two-way fixed effects and differences-in-differences with heterogeneous treatment effects: a survey. *Econom J* 2023;**26**:C1-C30. <https://doi.org/10.1093/ectj/utac017>.
 
 -   Roth J, Sant'Anna PHC, Bilinski A, et al. What’s trending in difference-in-differences? A synthesis of the recent econometrics literature. *J Econom* 2023;**235**:2218-2244. <https://doi.org/10.1016/j.jeconom.2023.03.008>.
@@ -34,7 +36,7 @@ Compiled by Lee Kennedy-Shaffer, PhD, in May–June 2024. See <https://leekshaff
 
 ## Review Articles: Epidemiology/Public Health
 
-### Other/General
+### General/Health Policy
 
 -   Basu S, Meghani A, Siddiqi A. Evaluating the health impact of large-scale public policy changes: classical and novel approaches. *Annu Rev Public Health* 2017;**38**:351-370. <https://doi.org/10.1146/annurev-publhealth-031816-044208>.
 
