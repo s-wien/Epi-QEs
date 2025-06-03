@@ -124,7 +124,7 @@ WAE <- tibble(Time=rep(c(1:5), 3),
 
 ggplot(WAE, mapping=aes(x=Time, y=Y, group=Unit, color=Unit,
                         shape=X)) + 
-  geom_point() + geom_line() + theme_bw() +
+  geom_point(size=4) + geom_line(lwd=1.5) + theme_bw() +
   scale_y_continuous(breaks=seq(0,10,by=2), minor_breaks=0:10) +
   coord_cartesian(ylim=c(0,10))
 ```
@@ -210,7 +210,7 @@ Time-varying effects can be broadly categorized into:
 
 -   **Dynamic treatment effects** that depend on how long a unit has been treated, and
 
--   **Calendar time effects** that differ for all units based on the period of observation.
+-   **Calendar time heterogeneous effects** that differ for all units based on the period of observation.
 
 Both can be problematic, although calendar time effects can be handled similarly to unit-varying effects.
 
@@ -280,10 +280,10 @@ Negative weights on some treatment effects *can* lead to averages outside of the
 
 # Proposed Solutions
 
-## Possible Solutions
+## Proposed Solutions (Broadly)
 
-(1) Dynamic Specifications
-(2) Restricting Observations: Exclude timing-only comparisons
+(1) Dynamic Specification
+(2) Dynamic Specification with Restricted Observations
 (3) Interacted Specification
 (4) Restricting Periods: First Differences
 (5) Explicit Weightings
@@ -298,14 +298,14 @@ where $K_{it}$ is the lead/lag for unit $i$ in period $t$ (e.g., $K_{it} = 0$ in
 
 See [Borusyak and Jaravel (2018)](https://scholar.harvard.edu/files/borusyak/files/borusyak_jaravel_event_studies.pdf) and [Borusyak et al. (2024)](https://doi.org/10.1093/restud/rdae007). Captures time-on-treatment heterogeneity.
 
-Also useful to test for "pre-trends" in single intervention time setting.
+Also useful to test for "pre-trends" in single intervention time setting: $\delta_k$ should be 0 for $k < 0$.
 
 ## Issues
 
 If there are any heterogeneities beyond time-on-treatment, then this dynamic specification can still give bias or uninterpretable estimands.
 
-- Negative weights on some units
-- "Contaminated" period effects
+-   Negative weights on some units
+-   "Contaminated" period effects
 
 See [Sun and Abraham (2021)](https://doi.org/10.1016/j.jeconom.2020.09.006).
 
@@ -317,13 +317,7 @@ One approach to avoiding forbidden comparisons is restricting the observations u
 
 . . .
 
-[Sun and Abraham (2021)](https://doi.org/10.1016/j.jeconom.2020.09.006) use the approach with a clean "control" $C$ that is either never-treated or last-treated. Their regression approach then implicitly weights by population share in each timing group.
-
-## 2. Stacked DID Regression
-
-[Cengiz et al. (2019)](https://doi.org/10.1093/qje/qjz014) and others weight through "stacked" regression. Get data for a clean comparison for each treated group and put these data sets together, with an indicator for each one. Then conduct TWFE, accounting for these data indicators.
-
-This essentially estimates each $ATT_{g,t}$ and then inverse-variance weights them through OLS. May have good efficiency, but limits interpretability of estimand if there are other heterogeneities.
+[Sun and Abraham (2021)](https://doi.org/10.1016/j.jeconom.2020.09.006) use the approach only comparing to a clean "control" $C$ that is either never-treated or last-treated. Their regression approach then implicitly weights by population share in each timing group.
 
 ## 2. Restricting Observations
 
@@ -345,7 +339,25 @@ Disadvantages/Limitations:
 :::
 :::::
 
-## 3. Restricting Periods: First-Difference
+## 3. Interacted Dynamic Effects
+
+We can account for timing cohort heterogeneity as well by further allowing the effect to vary by adoption timing group ($G_i$):
+
+$$
+Y_{it} = \alpha_i + \gamma_t + \sum_{g \not\in C} \sum_{k \neq -1} \delta_{g,k} I(G_i = g) I(K_{it} = k) + \epsilon_{it}
+$$
+
+. . .
+
+Various methods use this approach (e.g., [Sun and Abraham (2021)](https://doi.org/10.1016/j.jeconom.2020.09.006) can be put in this form), and differ in which comparisons/observations they allow and how they combine results (SA focuses on time-on-treatment averaging). This implies different assumptions and bias-variance tradeoffs.
+
+## 3. Stacked DID Regression
+
+[Cengiz et al. (2019)](https://doi.org/10.1093/qje/qjz014) and others weight through "stacked" regression. Get data for a clean comparison for each treated group and put these data sets together, with an indicator for each one. Then conduct TWFE, accounting for these data indicators.
+
+This essentially estimates each $\delta_{g,t}$ for each unit-time effect and then inverse-variance weights them through OLS. May have good efficiency, but limits interpretability of estimand if there are dynamic heterogeneities.
+
+## 4. Restricting Periods: First-Difference
 
 Use only the immediate switching effect. For each time period $t$ with at least one unit untreated at $t-1$ and treated at $t$ and at least one unit untreated at both $t-1$ and $t$, compute:
 
@@ -356,17 +368,17 @@ $$
 \end{align*}
 $$
 
-## 3. Restricting Periods: First-Difference
+## 4. Restricting Periods: First-Difference
 
 ![](images/Adv_DID/FirstDiff.png){fig-alt="Schematic of staggered adoption design. Only the last untreated (white) block and first treated (green) blocks in each row are highlighted for comparison."}
 
-## 3. Restricting Periods: First-Difference
+## 4. Restricting Periods: First-Difference
 
 Average these switcher estimates across all time periods $t$, weighted by number of units or individuals.
 
 See [de Chaisemartin and d'Haultfoeuille (2020)](https://doi.org/10.1257/aer.20181169) and [de Chaisemartin and d'Haultfoeuille (2023)](https://doi.org/10.1093/ectj/utac017), or the crossover (CO) estimator in [Kennedy-Shaffer et al. (2020)](https://doi.org/10.1002/sim.8451).
 
-## 3. Restricting Periods: First-Difference
+## 4. Restricting Periods: First-Difference
 
 ::::: columns
 ::: {.column width="50%"}
@@ -389,18 +401,6 @@ Disadvantages/Limitations:
 -   Need to be very careful about wash-out periods and interpretations
 :::
 :::::
-
-## 4. Interaction-Weighting Dynamics
-
-We can account for timing cohort heterogeneity as well by further allowing the effect to vary by adoption timing group ($G_i$):
-
-$$
-Y_{it} = \alpha_i + \gamma_t + \sum_{g \not\in C} \sum_{k \neq -1} \delta_{g,k} I(G_i = g) I(K_{it} = k) + \epsilon_{it}
-$$
-
-. . .
-
-Various methods use this approach (e.g., [Sun and Abraham (2021)](https://doi.org/10.1016/j.jeconom.2020.09.006) can be put in this form), and differ in which comparisons/observations they allow and how they combine results (SA focuses on time-on-treatment averaging). This implies different assumptions and bias-variance tradeoffs.
 
 ## 5. Weighting: Group-Time ATT
 
@@ -444,7 +444,7 @@ See [Kennedy-Shaffer (2024)](https://doi.org/10.48550/arXiv.2405.08730) and [Bak
 ::: {.column width="50%"}
 Advantages:
 
--   Highly flexible
+-   Highly flexible across heterogeneities
 
 -   Can ensure clean comparisons for each treated unit-period
 
@@ -454,7 +454,7 @@ Advantages:
 ::: {.column width="50%"}
 Disadvantages/Limitations:
 
--   Not necessarily efficient weighting
+-   Not necessarily efficient weighting (especially if only use last period)
 
 -   Complex to decide, fit, and interpret: many researcher degrees of freedom
 
@@ -489,7 +489,7 @@ Review/survey papers:
 ## Recommendations
 
 ::: incremental
--   Consider whether there is staggered adoption and display extent
+-   Consider whether there is staggered adoption and display extent.
 -   State assumed homogeneities clearly and justify. Also state what heterogeneities are considered.
 -   Report TWFE estimate and its decomposition.
 -   Report event study (dynamic regression) specification results.
@@ -498,11 +498,11 @@ Review/survey papers:
 ## Recommendations
 
 ::: incremental
--   Consider alternative weightings and restrictions
+-   Consider alternative weightings and restrictions:
     -   Is there a never-treated group? Or last-treated group that can be excluded?
     -   What is the desired estimand? Value of bias vs. variance vs. interpretability
-    -   Is covariate adjustment necessary? Are the covariates time-varying?
--   Select main approach (ideally pre-specified), conduct, and report clearly (with necessary assumptions)
+    -   Is parallel trends reasonable across all units? With or without covariate adjustment or restrictions?
+-   Select main approach (ideally pre-specified), conduct, and report clearly (with necessary assumptions).
 :::
 
 # Other Challenges
@@ -525,4 +525,4 @@ All of these approaches change the precise specification of the estimand as well
 It's easy to ignore the fundamentals when using the more advanced methods. Consider the validity of the data, the question being asked, and the feasibility of the effect.
 :::
 
-## Questions
+## Questions?

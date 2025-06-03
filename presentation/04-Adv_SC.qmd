@@ -206,7 +206,7 @@ Allows extrapolation and relies on modeling of time series. But can achieve bett
 
 [![](images/Adv_SC/Brodersen2015cite.png){fig-alt="Title for Brodersen et al. (2015)" fig-align="center" width="758"}](https://doi.org/10.1214/14-AOAS788)
 
-::: callout-note
+:::: callout-note
 ## Idea
 
 Combine three information sources in state-time model:
@@ -216,11 +216,11 @@ Combine three information sources in state-time model:
 -   Time series modeling of outcome pre-intervention
 -   State-space model for treated unit based on controls
 :::
-:::
+::::
 
 ## BSTS: Summary
 
-::: columns
+::::: columns
 ::: {.column width="50%"}
 -   Allows extrapolation: weights do not sum to 1
 
@@ -234,7 +234,7 @@ Combine three information sources in state-time model:
 
 [![](images/Adv_SC/Prunas2021cite.png){fig-alt="Title for Prunas et al. (2021)" fig-align="right" width="1042"}](https://doi.org/10.1093/aje/kwab266)
 :::
-:::
+:::::
 
 # Tradeoffs and Interpretations
 

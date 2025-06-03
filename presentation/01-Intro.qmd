@@ -90,6 +90,20 @@ editor: visual
 -   But ... has threats to internal and external validity
 :::
 
+## Threats and Considerations
+
+::: incremental
+-   Exchangeability conditions phrased differently
+
+-   Requires other assumptions, which are sometimes "hidden" or opaque
+
+-   Trade-offs between bias, variance, and generalizability
+
+-   Need to carefully consider desired estimand (ATT vs. others)
+
+-   Rarely includes sample size/power justification
+:::
+
 # Workshop Details
 
 ## Workshop Plan: Part I
@@ -160,7 +174,7 @@ All materials: <https://github.com/leekshaffer/Epi-QEs/>
 
 [![](images/bit.ly_Epi-QEs.png){fig-alt="QR code for above link" fig-align="center" width="4in"}](https://github.com/leekshaffer/Epi-QEs)
 
-# Epidemiologic Considerations
+# Epidemiologic Considerations for DID
 
 ## Key Assumptions
 
@@ -244,4 +258,4 @@ Disadvantages/Limitations:
 :::
 :::::
 
-## Questions
+## Questions?
