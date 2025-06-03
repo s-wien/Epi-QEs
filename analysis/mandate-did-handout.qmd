@@ -32,9 +32,9 @@ Again, we will use `tidyverse` and `knitr` for general coding and `lme4` for clu
 
 3.  `did`, described in [Callaway and Sant'Anna (2021)](https://doi.org/10.1016/j.jeconom.2020.12.001) gives more options for the CS approaches; and
 
-4.  `DIDmultiplegt` implements the first-difference approach of [de Chaisemartin and d'Haultfoeuille (2020)](https://doi.org/10.1257/aer.20181169) (if you're on a Mac, you may need to install [Xcode](https://developer.apple.com/xcode/) from the App Store or [XQuartz](https://www.xquartz.org) first and re-start R). Versions of this approach that can handle a wider array of settings, laid out in [de Chaisemartin and d'Haultfoeuille (2023)](https://doi.org/10.1093/ectj/utac017) and [de Chaisemartin and d'Haultfoeiulle (2024)](https://doi.org/10.1162/rest_a_01414), along with sped-up analytic standard errors are implemented in the `DIDmultiplegtDYN`, which requires Java for installation.
+4.  `DIDmultiplegt` implements the first-difference approach of [de Chaisemartin and d'Haultfoeuille (2020)](https://doi.org/10.1257/aer.20181169) (if you're on a Mac, you may need to install [Xcode](https://developer.apple.com/xcode/) from the App Store and [XQuartz](https://www.xquartz.org) first and re-start R). Versions of this approach that can handle a wider array of settings, laid out in [de Chaisemartin and d'Haultfoeuille (2023)](https://doi.org/10.1093/ectj/utac017) and [de Chaisemartin and d'Haultfoeiulle (2024)](https://doi.org/10.1162/rest_a_01414), along with sped-up analytic standard errors are implemented in the `DIDmultiplegtDYN`, which requires Java for installation.
 
-We now load the required libraries.
+We now load the required libraries (except `DIDmultiplegt`, which we will load later).
 
 ```{r}
 #| output: false
@@ -48,7 +48,7 @@ library(lme4)
 library(bacondecomp)
 library(did2s)
 library(did)
-library(DIDmultiplegt)
+# library(DIDmultiplegt)
 ```
 
 ## Graphical Exploration
@@ -106,17 +106,17 @@ ggplot() +
   theme_bw()
 ```
 
-Several states appear to have implausible declines or rates at 100. We can identify data errors that explain some of these peculiarities, e.g. [New Hampshire](https://www.nhpr.org/nh-news/2021-11-02/nh-covid-19-data-inaccurate), [Pennsylvania](https://wjactv.com/news/local/data-correction-drops-covid-vaccine-rates-in-pennsylvania), and [Washington](https://www.spokesman.com/stories/2021/sep/21/explaining-the-discrepancy-between-cdc-and-health-/). We will exclude these three states from the analysis, but a full analysis should examine the other states as well. We will also limit the analysis weeks to 2021, MMWR weeks 25–42 to both be more focused on timing around the implementation of mandates and exclude some data inconsistencies found at other times.
+Several states appear to have implausible declines or rates at 100. We can identify data errors that explain some of these peculiarities, e.g. [New Hampshire](https://www.nhpr.org/nh-news/2021-11-02/nh-covid-19-data-inaccurate), [Pennsylvania](https://wjactv.com/news/local/data-correction-drops-covid-vaccine-rates-in-pennsylvania), and [Washington](https://www.spokesman.com/stories/2021/sep/21/explaining-the-discrepancy-between-cdc-and-health-/). Vermont also clearly has a decline in the first-dose cumulative percentage. We will exclude these four states from the analysis, but a full analysis should examine the other states as well. We will also limit the analysis weeks to 2021, MMWR weeks 25–42 to both be more focused on timing around the implementation of mandates and exclude some data inconsistencies found at other times.
 
 ```{r}
-## Exclude New Hampshire, Pennsylvania, Washington:
+## Exclude New Hampshire, Pennsylvania, Vermont, Washington:
 Vax_adj <- Vax_weekly %>% 
-  dplyr::filter(!(State %in% c("NH","PA","WA")))
+  dplyr::filter(!(State %in% c("NH","PA","VT","WA")))
 ## Select weeks for analysis:
 Yr_Wk_Sel <- paste0("2021_",(25:42))
 ```
 
-We re-plot on this adjusted group of states and weeks.
+We re-plot this adjusted group of states and weeks.
 
 ```{r}
 ## Plot time series of first-dose proportion by state in smaller time window:
@@ -224,7 +224,7 @@ bacon <- bacon(D1P~mandate,
 ggplot(data=bacon, 
        mapping=aes(x=estimate,y=weight,
                    shape=type,color=type)) +
-  geom_point() + theme_bw() +
+  geom_point(size=2.5) + theme_bw() +
   labs(x="2x2 DID Estimate", y="Weight",
        shape="Comparison Type",
        color="Comparison Type")
@@ -335,7 +335,7 @@ plot_event_study(ES %>%
   labs(y="Point Est and 95% CI")
 ```
 
-This is the basic dynamic estimator that arises from including leads/lags (except -1, the last pre-treatment period) in the TWFE model. You can see some evidence for heterogeneous treatment effects: the effect seems to grow with time since treatment. There is also evidence for non-parallel trends: the lead times consistently have positive point estimates, indicating the treated states were growing faster than untreated states prior to treatment. These are decreasing, indicating that this effect was disappearing, or possibly changing. Under heterogeneous treatment effects (either calendar time-varying treatment effects or different dynamic effects by adoption cohorts), there can still be cross-lag contamination and negative weights. This even means that apparent pre-trends may not be reliable (i.e., non-zero lead estimates can result from heterogeneous dynamic effects rather than a violation of parallel trends).
+This is the basic dynamic estimator that arises from including leads/lags (except -1, the last pre-treatment period) in the TWFE model. There is some evidence for non-parallel trends: the lead times consistently have positive point estimates, indicating the treated states were growing more slowly than untreated states prior to treatment. These are decreasing, indicating that this effect was disappearing, or possibly changing. Under heterogeneous treatment effects (either calendar time-varying treatment effects or different dynamic effects by adoption cohorts), there can still be cross-lag contamination and negative weights. This even means that apparent pre-trends may not be reliable (i.e., non-zero lead estimates can result from heterogeneous dynamic effects rather than a violation of parallel trends).
 
 ```{r}
 ## Plot the results for just the dynamic estimator:
@@ -375,7 +375,9 @@ plot_event_study(ES %>%
 
 This approach gives noticeably different results from the others for the lead periods, although the post-treatment effect estimates are pretty similar. There are two main differences in the fitting compared to the Sun and Abraham approach: (1) not-yet-treated units are also used as controls here; and (2) pre-treatment lead estimates are estimated compared to the prior period, rather than to the last pre-treatment period. In fact, the leads estimated by SA are similar to the accumulated leads estimated by CS (they will be more different if there are fewer never-treated units). This makes any divergence from parallel pre-trends, including anticipation, appear starker in the SA results.
 
-In all cases, note how the standard errors tend to increase further from 0, as there are fewer treated (and in some cases, control) units available to make those estimates. Aggregating to a single parameter depends on the desired interpretation and variance properties.
+In all cases, note how the standard errors tend to increase further from 0, as there are fewer treated (and in some cases, control) units available to make those estimates.
+
+Aggregating to a single parameter depends on the desired interpretation and variance properties.
 
 ### Explicitly Weighted CS Approach
 
@@ -393,6 +395,14 @@ attgt <- att_gt(yname="D1P", tname="MMWR_week",
 
 Then, these group-time ATTs can be aggregated in different ways using the `aggte` function:
 
+-   The "simple" aggregation weights all group-time effects proportional to group size;
+
+-   The "dynamic" aggregation combines to the time-on-treatment level and reports each one ("event study"-style);
+
+-   The "group" aggregation combines to the timing group level and reports each one; and
+
+-   The "calendar" aggregation combines to the time period level and reports each one.
+
 ```{r}
 agg.simple <- aggte(attgt, type="simple")
 summary(agg.simple)
@@ -402,9 +412,12 @@ summary(agg.es)
 
 agg.gs <- aggte(attgt, type="group")
 summary(agg.gs)
+
+agg.cal <- aggte(attgt, type="calendar")
+summary(agg.cal)
 ```
 
-We can plot the event-study plot again from these results using the `ggdid` function:
+We can plot the event-study plot again from the "dynamic" aggregation results using the `ggdid` function:
 
 ```{r}
 ## Plot the event-study results for the CS estimator:
@@ -442,6 +455,10 @@ Now, the point estimates after treatment are generally positive, although still 
 Using the `did_multiplegt` function from the `DIDmultiplegt` package, we can fit the de Chaisemartin and d'Haultfoeuille (2020) method to estimate the average treatment effect of the first period after adoption. Standard errors can be derived using the `brep` and `cluster` options, but we set it to 0 here to speed up the analysis.
 
 ```{r}
+## Load the necessary library:
+library(DIDmultiplegt)
+# library(DIDmultiplegtDYN)
+
 ## First, we prepare a data set with a variable with the First_Week of
 ##  mandate for each mandate state and a unique state ID number.
 Vax_firstWeek <- Vax_adj %>% 
@@ -516,7 +533,7 @@ If you install the `DIDmultiplegtDYN` package, a faster implementation of standa
 
 ## Run the above analysis with the DIDmultiplegtDYN package instead:
 # install.packages("DIDmultiplegtDYN")
-require(DIDmultiplegtDYN)
+library(DIDmultiplegtDYN)
 
 dCdH_dyn <- did_multiplegt_dyn(df=Vax_firstWeek,
                                outcome="D1P",
@@ -530,8 +547,16 @@ dCdH_dyn <- did_multiplegt_dyn(df=Vax_firstWeek,
 dCdH_dyn
 ```
 
+## Summary
+
+While there are differences among the approaches, nearly all of the methods used here point to a small and highly uncertain effect. In addition, all leads suggest some violation of parallel trends. Adjusting for the previous week's cumulative first dose percentage leads to more zero leads and a consistently positive post-treatment estimate, which may indicate that covariate adjustment and/or using new doses as the outcome and a log scale might help solve some of the assumption issues.
+
+Overall, the differences among estimators are small relative to concerns about the validity of the analysis overall. However, they do point out potential issues about heterogeneity of effects based on state and time.
+
 ## Discussion Questions
 
 -   Are this question and this data set a good fit for a DID/staggered adoption analysis? Why or why not?
+
+-   What could explain the heterogeneities that are observed?
 
 -   What would you conclude from these results?
