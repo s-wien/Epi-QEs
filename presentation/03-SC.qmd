@@ -1,7 +1,7 @@
 ---
 title: "Introduction to Synthetic Control"
 author: "Lee Kennedy-Shaffer, PhD"
-date: "June 18, 2024"
+date: "June 10, 2025"
 format: revealjs
 embed-resources: true
 self-contained: true
@@ -164,7 +164,7 @@ where $v_k$ are weights on the importance of each covariate, which can themselve
 
 -   Generally sparse
 
--   Avoid extrapolation, permit interpolation
+-   Avoid extrapolation, permit (linear) interpolation
 
 -   Transparent and (somewhat) interpretable
 :::
@@ -188,6 +188,10 @@ The choice of time and scale for the comparison can be made by the investigator 
 
 # Robustness and Inference
 
+## Assessing Fit
+
+[![Abadie et al. (2010), Table 1](images/SC/Abadie2010Tbl1.png){fig-align="center" width="942" height="520"}](http://dx.doi.org/10.1198/jasa.2009.ap08746)
+
 ## Specification Tests
 
 The pre-intervention **mean squared prediction error (MSPE)** of the SC fit can be used to assess fit.
@@ -202,9 +206,7 @@ To test robustness of results, can change:
 
 -   Covariates used
 
-## Assessing Fit
-
-[![Abadie et al. (2010), Table 1](images/SC/Abadie2010Tbl1.png){fig-align="center" width="942" height="520"}](http://dx.doi.org/10.1198/jasa.2009.ap08746)
+-   Outcomes considered
 
 ## Placebo Test In-Space
 
@@ -231,7 +233,7 @@ Common choices are:
 -   First-period effect
 -   Average effect over all included post-treatment periods
 -   Post-treatment root mean square prediction error (RMSPE)
--   Post-treatment RMSPE/Pre-treatment RMSPE
+-   Post-treatment RMSPE/Pre-treatment RMSPE Ratio
 
 ## Placebo Test In-Time
 
@@ -250,6 +252,32 @@ In some cases, non-affected outcomes or populations may be available. These can 
 [![](images/SC/Bruhn2017cite.png){fig-alt="Title for Bruhn et al. (2017)" fig-align="center"}](https://doi.org/10.1073/pnas.1612833114)
 
 # Recommendations
+
+## Summary
+
+::::: columns
+::: {.column width="50%"}
+Advantages:
+
+-   Allows non-parallel and non-linear trends
+
+-   Interpretability of weights
+
+-   Counterfactual estimate can be used for many ATT estimands
+:::
+
+::: {.column width="50%"}
+Disadvantages/Limitations:
+
+-   Requires linear interpolation of trends
+
+-   Lots of researcher degrees of freedom
+
+-   Can be highly variable or sensitive to specifications
+
+-   Clearest with one or few treated units
+:::
+:::::
 
 ## Recommendations
 
