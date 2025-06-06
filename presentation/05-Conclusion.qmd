@@ -2,9 +2,10 @@
 title: "Conclusion"
 author: "Lee Kennedy-Shaffer, PhD"
 date: "June 10, 2025"
-format: revealjs
-embed-resources: true
-self-contained: true
+format: 
+  revealjs:
+    embed-resources: true
+    self-contained: true
 editor: visual
 ---
 
@@ -19,6 +20,17 @@ Other quasi-experimental methods include:
 -   Interrupted time series
 -   Instrumental variables
 -   Regression discontinuity
+
+## How to Approach an Analysis
+
+::: incremental
+1.  Plot treatment status over time
+2.  Carefully consider similarity of units (levels, trends, known & unknown covariates)
+3.  Carefully consider heterogeneities of effect that are possible
+4.  Determine desired estimand
+5.  Conduct simplest analyses (TWFE, dynamic TWFE) and plot pre- and post-trends
+6.  Conduct more complex analyses as needed
+:::
 
 ## Uses and Advantages in Epidemiology
 

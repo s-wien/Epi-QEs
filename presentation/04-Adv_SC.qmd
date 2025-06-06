@@ -2,9 +2,10 @@
 title: "Advanced Synthetic Control Methods"
 author: "Lee Kennedy-Shaffer, PhD"
 date: "June 10, 2025"
-format: revealjs
-embed-resources: true
-self-contained: true
+format: 
+  revealjs:
+    embed-resources: true
+    self-contained: true
 editor: visual
 ---
 
@@ -56,7 +57,7 @@ ggplot(data=lang_0624,
 
 # Methods
 
-## General: Penalized SCM
+## Standard SCM
 
 The standard SCM had weights $w_i$ that minimized:
 
@@ -66,9 +67,9 @@ $$
 
 for covariates $k=1,\ldots,K$.
 
-. . .
+## General: Penalized SCM
 
-This can be extended with a penalty term $\xi$ on a function $f(w_i)$ to minimize:
+This can be extended with a penalty term $\xi$ on a function of the weights $f(w_i)$ to minimize:
 
 $$
 \sum_{k=1}^K v_k \left( X_{1k} - \left(\sum_{i=1}^n X_{0ik} w_i \right) \right)^2 + \xi \sum_{i=1}^n f(w_i).
@@ -173,7 +174,7 @@ Options:
 
 Advantages:
 
--   Allows intercept shift
+-   Allow intercept shift
 -   Allow negative weights with some sparsity
 -   Improved performance in settings with poor SC fit
 
@@ -183,7 +184,7 @@ Advantages:
 
 Disadvantages:
 
--   Allows extrapolation
+-   Allow extrapolation
 -   Loss of interpretation of weights
 -   More user degrees of freedom
 -   Challenging inference
@@ -195,12 +196,42 @@ Disadvantages:
 ::: callout-note
 ## Idea: "Interactive Fixed Effects"
 
-Use control unit data to estimate unit fixed effects and time-varying coefficients. Use these coefficients to estimate treated unit fixed effects and then counterfactuals.
+Use control unit data to estimate unit fixed effects and some set of unknown time-varying coefficients (factors).
+
+Use these coefficients to estimate treated unit fixed effects.
+
+Use the treated unit FEs and time-varying effects to estimate counterfactuals for treated unit-periods.
 :::
 
-. . .
+## Matrix Completion
 
-Allows extrapolation and relies on modeling of time series. But can achieve better fit, especially with shift. Allows multiple treated units to be estimated quickly.
+-   Similar to interactive fixed effects
+
+-   Uses a continuous penalty instead of a sparsity-inducing penalty on the unknown time-varying coefficients.
+
+## GSC, IFE, and Matrix Completion
+
+::::: columns
+::: {.column width="50%"}
+**Advantages:**
+
+-   Can achieve better fit
+
+-   Accomodates staggered adoption and general time-varying treatment
+
+-   Allows quick and efficient estimation for multiple treated units
+:::
+
+::: {.column width="50%"}
+**Disadvantages/Assumptions:**
+
+-   Requires a fixed (but unknown) set of time-varying factors across time and units
+
+-   Number of factors usually selected by cross-validation
+
+-   Allows extrapolation and loses strict weighting interpretability
+:::
+:::::
 
 ## Bayesian Structural Time Series Modeling
 
@@ -238,7 +269,7 @@ Combine three information sources in state-time model:
 
 # Tradeoffs and Interpretations
 
-## Validity, Generalizability, and Assumptions
+## Validity: Interpolation vs. Extrapolation
 
 ::: incremental
 -   Pooling across units enables better fit, but loses unit-specific information
@@ -246,16 +277,28 @@ Combine three information sources in state-time model:
 -   Extrapolation allows better pre-treatment fit, but may over-fit or rely on additional assumptions
 
 -   Reducing interpolation is crucial for some settings (non-linear outcomes)
+:::
 
+## Generalizability-Bias-Variance Tradeoffs
+
+::: incremental
 -   Advanced methods allow use of more control series: reduces variance but may introduce bias
+
+-   Cross-validation procedures can improve fit but reduce efficiency
+
+-   Accounting for heterogeneities improves generalizability and reduces bias but increases variance
+
+-   Still require common factors, exogenous shocks, no intervening treatments
 :::
 
 ## Interpretability of Weights
 
+::: incremental
 -   A key benefit of SC is its interpretability
 
 -   This is somewhat lost in more advanced approaches
 
 -   The interpretability is tied to justifying the assumptions as well
+:::
 
 ## Questions?

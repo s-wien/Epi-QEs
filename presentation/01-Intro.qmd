@@ -2,11 +2,18 @@
 title: "Quasi-experiments in epidemiology"
 author: "Lee Kennedy-Shaffer, PhD"
 date: "June 10, 2025"
-format: revealjs
-embed-resources: true
-self-contained: true
+format: 
+  revealjs:
+    embed-resources: true
+    self-contained: true
 editor: visual
 ---
+
+## Quasi-Experiments in Epidemiology: Workshop Materials
+
+All materials: <https://github.com/leekshaffer/Epi-QEs/>
+
+![](images/bit.ly_Epi-QEs.png){fig-alt="QR code for above link" fig-align="center" width="4in"}
 
 ## How Will I Know?
 
