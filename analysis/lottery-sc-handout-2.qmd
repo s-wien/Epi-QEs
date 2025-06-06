@@ -343,9 +343,37 @@ Clearly, this achieves an excellent pre-treatment fit, but it may in fact be ove
 ME_as_r_fe$weights
 ```
 
+### Discussion Questions
+
+-   Are the trade-offs of ASCM worthwhile for these other states?
+
 ## Generalized Synthetic Control and Interactive Fixed Effects
 
-Another option is to fit the generalized SCM using the `gsynth` package.
+Another option is to fit the generalized SC (interactive fixed effects) model using the `gsynth` package, which can also accommodate matrix completion.
+
+```{r}
+ME_gsc <- gsynth(formula=people_fully_vaccinated_per_hundred~treated, 
+                 data=ME_data, 
+                 X=NULL, 
+                 index=c("stateF","week"), force="two-way", 
+                 r=0, CV=TRUE)
+```
+
+This uses cross-validation to determine that it should include 3 unknown time-varying coefficients. We can print the weights as well, noting that they can be negative and above 1.
+
+```{r}
+ME_gsc$wgt.implied
+```
+
+```{r}
+#| warning: false
+#| fig-cap: "Time series of the difference, Observed – Generalized Synthetic Maine, in percent fully vaccinated rate by week, starting from the week ending 1/17/21."
+#| fig-alt: "Line plot that fluctuates greatly, from around -1 to 1, until a vertical line at Week 24, and then is around -0.2 and 0 at Weeks 24 and 25, respectively."
+plot(ME_gsc, 
+     inf=FALSE)
+```
+
+The generalized SC can also be an outcome model used for augmentation in `augsynth()`.
 
 ```{r}
 ## Then we can fit the model using the GSYN option for progfunc:
@@ -366,9 +394,31 @@ plot(ME_gsynth,
 
 Again, different assumptions are being made here, and should be carefully considered. This appears more similar to the initial SC fit, however it has a larger effect estimate.
 
-## Discussion Questions
+Generalized SCM also allows specified time-varying covariates to be used:
 
-- Are the trade-offs of ASCM worthwhile for these other states?
+```{r}
+## Creating lag variable:
+ME_data <- 
+    ME_data %>%
+    group_by(state) %>%
+    mutate(lag.pfv = dplyr::lag(people_fully_vaccinated_per_hundred, 
+                                n = 1, default = NA))
+ME_gsc_cov <- gsynth(formula=people_fully_vaccinated_per_hundred~treated+
+                   new_case_per_million+new_death_per_million+lag.pfv, 
+                 data=ME_data %>% dplyr::filter(!is.na(lag.pfv)),
+                 index=c("stateF","week"), force="two-way", 
+                 r=0, CV=TRUE)
+```
+
+```{r}
+#| warning: false
+#| fig-cap: "Time series of the difference, Observed – Generalized Synthetic Maine, in percent fully vaccinated rate by week, starting from the week ending 1/17/21."
+#| fig-alt: "Line plot that fluctuates greatly, from around -1 to 0.75, until a vertical line at Week 24, and then is around -0.2 and 0.1 at Weeks 24 and 25, respectively."
+plot(ME_gsc_cov, 
+     inf=FALSE)
+```
+
+This does seem to improve the fit to some extent, but does not have a noticeable effect on the effect estimates.
 
 ## Staggered Adoption
 
@@ -398,4 +448,4 @@ plot(Mult_as)
 
 ### Discussion Questions
 
-- Given what we know about staggered adoption issues in the DID case, how do we interpret these results? Are there any additional issues we need to consider?
+-   Given what we know about staggered adoption issues in the DID case, how do we interpret these results? Are there any additional issues we need to consider?
