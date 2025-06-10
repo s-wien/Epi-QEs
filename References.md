@@ -34,6 +34,8 @@ Compiled by Lee Kennedy-Shaffer, PhD, in May–June 2024. See <https://leekshaff
 
 -   Roth J. Interpreting event-studies from recent difference-in-differences methods. *arXiv* [preprint] 2024. <https://doi.org/10.48550/arXiv.2401.12309>.
 
+-   Baker AC, Callaway B, Cunningham S, Goodman-Bacon A, Sant'Anna PHC. Difference-in-differences designs: A practitioner's guide. *arXiv* [preprint] 2025. <https://doi.org/10.48550/arXiv.2503.13323>.
+
 ## Review Articles: Epidemiology/Public Health
 
 ### General/Health Policy
@@ -117,8 +119,6 @@ Compiled by Lee Kennedy-Shaffer, PhD, in May–June 2024. See <https://leekshaff
 -   De Chaisemartin C, D'Haultfoeuille X. Difference-in-differences estimators of intertemporal treatment effects. *Rev Econ Stat* 2024 [epub ahead of print]. <https://doi.org/10.1162/rest_a_01414>.
 
 -   Kennedy-Shaffer L. A generalized difference-in-differences estimator for randomized stepped-wedge and observational staggered adoption settings. *arXiv* [preprint] 2024. <https://doi.org/10.48550/arXiv.2405.08730>.
-
--   Baker AC, Callaway B, Cunningham S, Goodman-Bacon A, Sant'Anna PHC. Difference-in-differences designs: A practitioner's guide. *arXiv* [preprint] 2025. <https://doi.org/10.48550/arXiv.2503.13323>.
 
 ## Methods Articles: SC and Related Methods
 
